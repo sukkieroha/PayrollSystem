@@ -10,14 +10,14 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
     private JTextArea outputTextArea;
 
     // Employees
-    private Employee emp1 = new Employee("10001", "Jose", "Crisostomo", 200, 1500, 1200, 1300);
-    private Employee emp2 = new Employee("10002", "Christian", "Mata", 300.0, 1600.0, 1500.0, 1500.0);
-    private Employee emp3 = new Employee("10003", "Brad", "San Jose", 200.0, 1400.0, 1500.0, 1500.0);
+    Employee emp1 = new Employee("10001", "Jose", "Crisostomo", 200, 1500, 1200, 1300,"222222222","11111111","333333","22220000");
+    Employee emp2 = new Employee("10002", "Christian", "Mata", 30.0, 600.0, 150.0, 250.0,"111111111","2222222","4444444","33330000");
+    Employee emp3 = new Employee("10003", "Brad", "San Jose", 20.0, 400.0, 75.0, 150.0,"333333333","3333333","5555555","4444000");
 
     public PayrollCalculatorGUI() {
         // Set up the frame
         setTitle("Payroll Calculator");
-        setSize(500, 400);
+        setSize(400, 170);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -241,5 +241,4 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
         new PayrollCalculatorGUI();
     }
 }
-
 

@@ -6,10 +6,14 @@ public class Employee {
     private static double riceAllowance;
     private static double phoneAllowance;
     private static double clothingAllowance;
+    private String sssNumber;
+    private String philhealthNumber;
+    private String pagibigNumber;
+    private String tin;
 
     public Employee(String empNum, String firstName, String lastName,
                     double hourlyRate, double riceAllowance,
-                    double phoneAllowance, double clothingAllowance) {
+                    double phoneAllowance, double clothingAllowance, String sssNumber, String philhealthNumber,String pagibigNumber, String tin) {
         this.empNum = empNum;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -17,6 +21,10 @@ public class Employee {
         this.riceAllowance = riceAllowance;
         this.phoneAllowance = phoneAllowance;
         this.clothingAllowance = clothingAllowance;
+        this.sssNumber = sssNumber;
+        this.philhealthNumber = philhealthNumber;
+        this.pagibigNumber = pagibigNumber;
+        this.tin = tin;
     }
 
     public String getEmpNum() {
@@ -75,6 +83,15 @@ public class Employee {
         this.clothingAllowance = clothingAllowance;
     }
 
+    public String getSssNumber() { return sssNumber; }
+    public void setSssNumber (String sssNumber) { this.sssNumber = sssNumber; }
+
+    public  String getPhilhealthNumber() { return  philhealthNumber;}
+    public void setPhilhealthNumber(String philhealthNumber) { this.philhealthNumber = philhealthNumber;}
+    public  String getPagibigNumber() { return pagibigNumber;}
+    public void setPagibigNumber(String pagibigNumber) { this.pagibigNumber = pagibigNumber;}
+    public String getTin() { return tin;}
+    public void setTin(String tin) { this.tin =tin;}
     public String getFullName() {
         return firstName + " " + lastName;
     }
