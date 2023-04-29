@@ -3,23 +3,23 @@ public class PayrollCalculator {
     public static void main(String[] args) {
 
         // Create 3 employees with their hourly rate and allowances pre-set
-        Employee emp1 = new Employee("10001", "Jose", "Crisostomo", 200, 1500, 1200, 1300,"222222222","11111111","333333","22220000");
-        Employee emp2 = new Employee("10001", "Christian", "Mata", 30.0, 600.0, 150.0, 250.0,"111111111","2222222","4444444","33330000");
-        Employee emp3 = new Employee("10003", "Brad", "San Jose", 20.0, 400.0, 75.0, 150.0,"333333333","3333333","5555555","4444000");
+        Employee emp1 = new Employee("10001", "Jose", "Crisostomo", "222222222","11111111","333333","22220000",200, 1500, 1200, 130);
+        Employee emp2 = new Employee("10002", "Christian", "Mata", "111111111","2222222","4444444","33330000",30.0, 600.0, 150.0, 250.0);
+        Employee emp3 = new Employee("10003", "Brad", "San Jose", "333333333","3333333","5555555","4444000",20.0, 400.0, 75.0, 150.0);
 
         // Get input from the user for each employee
-        String empNum = JOptionPane.showInputDialog(null, "Enter employee number:");
+        String employeeNumber = JOptionPane.showInputDialog(null, "Enter employee number:");
         String firstName = JOptionPane.showInputDialog(null, "Enter first name:");
         String lastName = JOptionPane.showInputDialog(null, "Enter last name:");
         double hoursWorked = Double.parseDouble(JOptionPane.showInputDialog(null, "Enter hours worked:"));
 
         // Determine which employee matches the input employee number
         Employee employee = null;
-        if (empNum.equals(emp1.getEmpNum())) {
+        if (employeeNumber.equals(emp1.getEmployeeNumber())) {
             employee = emp1;
-        } else if (empNum.equals(emp2.getEmpNum())) {
+        } else if (employeeNumber.equals(emp2.getEmployeeNumber())) {
             employee = emp2;
-        } else if (empNum.equals(emp3.getEmpNum())) {
+        } else if (employeeNumber.equals(emp3.getEmployeeNumber())) {
             employee = emp3;
         } else {
             JOptionPane.showMessageDialog(null, "Invalid employee number!");
@@ -42,7 +42,7 @@ public class PayrollCalculator {
 
         // Display the payroll details
         System.out.println("Employee Details:" );
-        System.out.println("Employee Number: " + employee.getEmpNum());
+        System.out.println("Employee Number: " + employee.getEmployeeNumber());
         System.out.println("Name: " + employee.getFullName());
         System.out.println("Gross Pay: " + employee.computeGrossPay(hoursWorked));
         System.out.println("Rice Allowance: " + employee.getRiceAllowance());

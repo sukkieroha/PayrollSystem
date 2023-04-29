@@ -1,5 +1,5 @@
 public class Employee {
-    private String empNum;
+    private String employeeNumber;
     private String firstName;
     private String lastName;
     private static double hourlyRate;
@@ -11,28 +11,28 @@ public class Employee {
     private String pagibigNumber;
     private String tin;
 
-    public Employee(String empNum, String firstName, String lastName,
-                    double hourlyRate, double riceAllowance,
-                    double phoneAllowance, double clothingAllowance, String sssNumber, String philhealthNumber,String pagibigNumber, String tin) {
-        this.empNum = empNum;
+    public Employee(String employeeNumber, String firstName, String lastName,
+                     String sssNumber, String philhealthNumber, String pagibigNumber, String tin,double hourlyRate, double riceAllowance, double phoneAllowance, double clothingAllowance) {
+        this.employeeNumber = employeeNumber;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.hourlyRate = hourlyRate;
-        this.riceAllowance = riceAllowance;
-        this.phoneAllowance = phoneAllowance;
-        this.clothingAllowance = clothingAllowance;
         this.sssNumber = sssNumber;
         this.philhealthNumber = philhealthNumber;
         this.pagibigNumber = pagibigNumber;
         this.tin = tin;
+        this.hourlyRate = hourlyRate;
+        this.riceAllowance = riceAllowance;
+        this.phoneAllowance = phoneAllowance;
+        this.clothingAllowance = clothingAllowance;
+
     }
 
-    public String getEmpNum() {
-        return empNum;
+    public String getEmployeeNumber() {
+        return employeeNumber;
     }
 
-    public void setEmpNum(String empNum) {
-        this.empNum = empNum;
+    public void setEmployeeNumber(String employeeNumber) {
+        this.employeeNumber = employeeNumber;
     }
 
     public String getFirstName() {
@@ -51,6 +51,15 @@ public class Employee {
         this.lastName = lastName;
     }
 
+    public String getSssNumber() { return sssNumber; }
+    public void setSssNumber (String sssNumber) { this.sssNumber = sssNumber; }
+
+    public  String getPhilhealthNumber() { return  philhealthNumber;}
+    public void setPhilhealthNumber(String philhealthNumber) { this.philhealthNumber = philhealthNumber;}
+    public  String getPagibigNumber() { return pagibigNumber;}
+    public void setPagibigNumber(String pagibigNumber) { this.pagibigNumber = pagibigNumber;}
+    public String getTin() { return tin;}
+    public void setTin(String tin) { this.tin =tin;}
     public double getHourlyRate() {
         return hourlyRate;
     }
@@ -83,15 +92,6 @@ public class Employee {
         this.clothingAllowance = clothingAllowance;
     }
 
-    public String getSssNumber() { return sssNumber; }
-    public void setSssNumber (String sssNumber) { this.sssNumber = sssNumber; }
-
-    public  String getPhilhealthNumber() { return  philhealthNumber;}
-    public void setPhilhealthNumber(String philhealthNumber) { this.philhealthNumber = philhealthNumber;}
-    public  String getPagibigNumber() { return pagibigNumber;}
-    public void setPagibigNumber(String pagibigNumber) { this.pagibigNumber = pagibigNumber;}
-    public String getTin() { return tin;}
-    public void setTin(String tin) { this.tin =tin;}
     public String getFullName() {
         return firstName + " " + lastName;
     }
@@ -145,9 +145,10 @@ public class Employee {
         return grossPay - totalDeductions;
     }
 
+
     public String toString() {
         return "Employee{" +
-                "empNum='" + empNum + '\'' +
+                "empNum='" + employeeNumber + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", hourlyRate=" + hourlyRate +

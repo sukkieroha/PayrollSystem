@@ -3,7 +3,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class SalaryCalculatorGUI extends JFrame {
     private JTable employeeTable;
@@ -21,16 +23,20 @@ public class SalaryCalculatorGUI extends JFrame {
         model.addColumn("First Name");
         model.addColumn("SSS No.");
         model.addColumn("PhilHealth No.");
-        model.addColumn("TIN");
         model.addColumn("Pagibig No.");
+        model.addColumn("TIN");
 
-        // Add data to the table model
-        Object[] rowData = {10001, "Crisostomo", "Jose", "49-1632020-8", "382189453145", "317-674-022-000", "441093369646"};
-        model.addRow(rowData);
-        rowData = new Object[]{10002, "Mata", "Christian", "49-2959312-6", "824187961962", "103-100-522-000", "631052853464"};
-        model.addRow(rowData);
-        rowData = new Object[]{10003, "San Jose", "Brad", "40-2400714-1", "239192926939", "672-474-690-000", "210850209964"};
-        model.addRow(rowData);
+// Read the employee details from the CSV file and add them to the table model
+        try (BufferedReader br = new BufferedReader(new FileReader("employees.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                model.addRow(data);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error reading employees.csv", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
 
         // Create the table
         employeeTable = new JTable(model);
@@ -45,13 +51,15 @@ public class SalaryCalculatorGUI extends JFrame {
                 // Get the selected row and display the employee details and pay details
                 int selectedRow = employeeTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    int employeeNumber = (int) model.getValueAt(selectedRow, 0);
+                    String employeeNumber = (String) model.getValueAt(selectedRow, 0);
                     String lastName = (String) model.getValueAt(selectedRow, 1);
                     String firstName = (String) model.getValueAt(selectedRow, 2);
                     String sssNo = (String) model.getValueAt(selectedRow, 3);
                     String philHealthNo = (String) model.getValueAt(selectedRow, 4);
-                    String tin = (String) model.getValueAt(selectedRow, 5);
-                    String pagibigNo = (String) model.getValueAt(selectedRow, 6);
+                    String pagibigNo = (String) model.getValueAt(selectedRow, 5);
+                    String tin = (String) model.getValueAt(selectedRow, 6);
+
+
 
                     // Display the employee details and pay details in a new JFrame
                     JFrame detailsFrame = new JFrame();
@@ -62,7 +70,7 @@ public class SalaryCalculatorGUI extends JFrame {
                     // Create a panel for the employee details
                     JPanel employeeDetailsPanel = new JPanel(new GridLayout(7, 2));
                     employeeDetailsPanel.add(new JLabel("Employee Number:"));
-                    employeeDetailsPanel.add(new JLabel(Integer.toString(employeeNumber)));
+                    employeeDetailsPanel.add(new JLabel(employeeNumber));
                     employeeDetailsPanel.add(new JLabel("Last Name:"));
                     employeeDetailsPanel.add(new JLabel(lastName));
                     employeeDetailsPanel.add(new JLabel("First Name:"));
@@ -112,7 +120,6 @@ public class SalaryCalculatorGUI extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    PayrollCalculatorGUI payrollCalculatorGUI = new PayrollCalculatorGUI();
 
     public static void main(String[] args) {
         new SalaryCalculatorGUI();

@@ -4,15 +4,15 @@ import java.awt.event.*;
 
 public class PayrollCalculatorGUI extends JFrame implements ActionListener {
     // GUI components
-    private JLabel employeeNumLabel, firstNameLabel, lastNameLabel, hoursWorkedLabel;
-    private JTextField employeeNumTextField, firstNameTextField, lastNameTextField, hoursWorkedTextField;
+    private JLabel employeeNumberLabel, firstNameLabel, lastNameLabel, hoursWorkedLabel;
+    private JTextField employeeNumberTextField, firstNameTextField, lastNameTextField, hoursWorkedTextField;
     private JButton calculateButton;
     private JTextArea outputTextArea;
 
     // Employees
-    Employee emp1 = new Employee("10001", "Jose", "Crisostomo", 200, 1500, 1200, 1300,"222222222","11111111","333333","22220000");
-    Employee emp2 = new Employee("10002", "Christian", "Mata", 30.0, 600.0, 150.0, 250.0,"111111111","2222222","4444444","33330000");
-    Employee emp3 = new Employee("10003", "Brad", "San Jose", 20.0, 400.0, 75.0, 150.0,"333333333","3333333","5555555","4444000");
+    Employee emp1 = new Employee("10001", "Jose", "Crisostomo", "222222222","11111111","333333","22220000",200, 1500, 1200, 1300);
+    Employee emp2 = new Employee("10002", "Christian", "Mata", "111111111","2222222","4444444","33330000",30.0, 600.0, 150.0, 250.0);
+    Employee emp3 = new Employee("10003", "Brad", "San Jose", "333333333","3333333","5555555","4444000",20.0, 400.0, 75.0, 150.0);
 
     public PayrollCalculatorGUI() {
         // Set up the frame
@@ -23,16 +23,16 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
 
         // Add the input panel
         JPanel inputPanel = new JPanel(new GridLayout(4, 2));
-        employeeNumLabel = new JLabel("Employee Number:");
-        employeeNumTextField = new JTextField();
+        employeeNumberLabel = new JLabel("Employee Number:");
+        employeeNumberTextField = new JTextField();
         firstNameLabel = new JLabel("First Name:");
         firstNameTextField = new JTextField();
         lastNameLabel = new JLabel("Last Name:");
         lastNameTextField = new JTextField();
         hoursWorkedLabel = new JLabel("Hours Worked:");
         hoursWorkedTextField = new JTextField();
-        inputPanel.add(employeeNumLabel);
-        inputPanel.add(employeeNumTextField);
+        inputPanel.add(employeeNumberLabel);
+        inputPanel.add(employeeNumberTextField);
         inputPanel.add(firstNameLabel);
         inputPanel.add(firstNameTextField);
         inputPanel.add(lastNameLabel);
@@ -58,7 +58,7 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == calculateButton) {
             // Get input from the user
-            String empNum = employeeNumTextField.getText();
+            String employeeNumber = employeeNumberTextField.getText();
             String firstName = firstNameTextField.getText();
             String lastName = lastNameTextField.getText();
             double hoursWorked = 0;
@@ -71,11 +71,11 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
 
             // Determine which employee matches the input employee number
             Employee employee = null;
-            if (empNum.equals(emp1.getEmpNum())) {
+            if (employeeNumber.equals(emp1.getEmployeeNumber())) {
                 employee = emp1;
-            } else if (empNum.equals(emp2.getEmpNum())) {
+            } else if (employeeNumber.equals(emp2.getEmployeeNumber())) {
                 employee = emp2;
-            } else if (empNum.equals(emp3.getEmpNum())) {
+            } else if (employeeNumber.equals(emp3.getEmployeeNumber())) {
                 employee = emp3;
             } else {
                 JOptionPane.showMessageDialog(null, "Invalid employee number!");
@@ -107,7 +107,7 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
 
             JLabel employeeNumLabel = new JLabel("Employee Number:");
             employeeDetailsPanel.add(employeeNumLabel);
-            JTextField employeeNumField = new JTextField(employee.getEmpNum());
+            JTextField employeeNumField = new JTextField(employee.getEmployeeNumber());
             employeeDetailsPanel.add(employeeNumField);
 
             JLabel firstNameLabel = new JLabel("First Name:");
@@ -203,7 +203,7 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
             // Create a panel to display the employee details
             JPanel employeePanel = new JPanel(new GridLayout(4, 2));
             employeePanel.add(employeeNumLabel);
-            employeePanel.add(new JLabel(employee.getEmpNum()));
+            employeePanel.add(new JLabel(String.valueOf(employee.getEmployeeNumber())));
             employeePanel.add(firstNameLabel);
             employeePanel.add(new JLabel(firstName));
             employeePanel.add(lastNameLabel);
