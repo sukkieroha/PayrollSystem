@@ -5,11 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SalaryCalculatorGUI extends JFrame {
     private JTable employeeTable;
     private DefaultTableModel model;
+    private JButton viewButton, deleteButton, updateButton;
+    private int selectedRow;
+    private ArrayList<Employee> employees;
+    private ArrayList<Employee> deletedEmployees;
+    private boolean isEditing;
 
     public SalaryCalculatorGUI() {
         setTitle("Employee Details");
@@ -26,7 +33,7 @@ public class SalaryCalculatorGUI extends JFrame {
         model.addColumn("Pagibig No.");
         model.addColumn("TIN");
 
-// Read the employee details from the CSV file and add them to the table model
+        // Read the employee details from the CSV file and add them to the table model
         try (BufferedReader br = new BufferedReader(new FileReader("employees.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -38,13 +45,20 @@ public class SalaryCalculatorGUI extends JFrame {
             System.exit(1);
         }
 
+
         // Create the table
         employeeTable = new JTable(model);
         employeeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // Add a button to view employee details and pay details
-        JButton viewButton = new JButton("View Details");
+        // Add buttons to view, delete, and update employee details, and to save or cancel changes
+        viewButton = new JButton("View Details");
         viewButton.setEnabled(false);
+        deleteButton = new JButton("Delete");
+        deleteButton.setEnabled(false);
+        updateButton = new JButton("Update");
+        updateButton.setEnabled(false);
+
+        // Add action listeners to buttons
         viewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,7 +72,6 @@ public class SalaryCalculatorGUI extends JFrame {
                     String philHealthNo = (String) model.getValueAt(selectedRow, 4);
                     String pagibigNo = (String) model.getValueAt(selectedRow, 5);
                     String tin = (String) model.getValueAt(selectedRow, 6);
-
 
 
                     // Display the employee details and pay details in a new JFrame
@@ -78,11 +91,11 @@ public class SalaryCalculatorGUI extends JFrame {
                     employeeDetailsPanel.add(new JLabel("SSS No.:"));
                     employeeDetailsPanel.add(new JLabel(sssNo));
                     employeeDetailsPanel.add(new JLabel("PhilHealth No.:"));
-                    employeeDetailsPanel.add(new JLabel(philHealthNo));
+                    employeeDetailsPanel.add(new JLabel(philHealthNo));  employeeDetailsPanel.add(new JLabel("Pagibig No.:"));
+                    employeeDetailsPanel.add(new JLabel(pagibigNo));
                     employeeDetailsPanel.add(new JLabel("TIN:"));
                     employeeDetailsPanel.add(new JLabel(tin));
-                    employeeDetailsPanel.add(new JLabel("Pagibig No.:"));
-                    employeeDetailsPanel.add(new JLabel(pagibigNo));
+
 
                     // Create a panel for the pay details
                     JPanel payDetailsPanel = new JPanel(new GridLayout(2, 2));
@@ -102,18 +115,112 @@ public class SalaryCalculatorGUI extends JFrame {
                 }
             }
         });
-
-        // Add a selection listener to enable/disable the view button
-        employeeTable.getSelectionModel().addListSelectionListener(event -> {
-            if (!event.getValueIsAdjusting()) {
-                boolean isSelected = (employeeTable.getSelectedRow() != -1);
-                viewButton.setEnabled(isSelected);
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = employeeTable.getSelectedRow();
+                if (selectedRow != -1) {
+                    // Confirm the deletion
+                    int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this record?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+                    if (result == JOptionPane.YES_OPTION) {
+                        // Remove the selected row from the table model
+                        model.removeRow(selectedRow);
+                    }
+                }
             }
         });
 
-        // Add the table and button to the frame
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = employeeTable.getSelectedRow();
+                if (selectedRow != -1) {
+                    // Get the current employee details
+                    String employeeNumber = (String) model.getValueAt(selectedRow, 0);
+                    String lastName = (String) model.getValueAt(selectedRow, 1);
+                    String firstName = (String) model.getValueAt(selectedRow, 2);
+                    String sssNo = (String) model.getValueAt(selectedRow, 3);
+                    String philHealthNo = (String) model.getValueAt(selectedRow, 4);
+                    String pagibigNo = (String) model.getValueAt(selectedRow, 5);
+                    String tin = (String) model.getValueAt(selectedRow, 6);
+
+
+                    // Display a dialog for updating the employee details
+                    JPanel updatePanel = new JPanel(new GridLayout(7, 2));
+                    updatePanel.add(new JLabel("Employee Number:"));
+                    JTextField employeeNumberField = new JTextField(employeeNumber);
+                    employeeNumberField.setEditable(false);
+                    updatePanel.add(employeeNumberField);
+                    updatePanel.add(new JLabel("Last Name:"));
+                    JTextField lastNameField = new JTextField(lastName);
+                    updatePanel.add(lastNameField);
+                    updatePanel.add(new JLabel("First Name:"));
+                    JTextField firstNameField = new JTextField(firstName);
+                    updatePanel.add(firstNameField);
+                    updatePanel.add(new JLabel("SSS No.:"));
+                    JTextField sssNoField = new JTextField(sssNo);
+                    updatePanel.add(sssNoField);
+                    updatePanel.add(new JLabel("PhilHealth No.:"));
+                    JTextField philHealthNoField = new JTextField(philHealthNo);
+                    updatePanel.add(philHealthNoField);
+                    updatePanel.add(new JLabel("Pagibig No.:"));
+                    JTextField pagibigNoField = new JTextField(pagibigNo);
+                    updatePanel.add(pagibigNoField);
+                    updatePanel.add(new JLabel("TIN:"));
+                    JTextField tinField = new JTextField(tin);
+                    updatePanel.add(tinField);
+
+
+                    // Create the dialog box
+                    int result = JOptionPane.showConfirmDialog(null, updatePanel, "Update Employee Details", JOptionPane.OK_CANCEL_OPTION);
+                    if (result == JOptionPane.OK_OPTION) {
+                        // Get the new values from the text fields
+                        String newLastName = lastNameField.getText();
+                        String newFirstName = firstNameField.getText();
+                        String newSssNo = sssNoField.getText();
+                        String newPhilHealthNo = philHealthNoField.getText();
+                        String newPagibigNo = pagibigNoField.getText();
+                        String newTin = tinField.getText();
+
+
+                        // Update the values in the table model
+                        model.setValueAt(newLastName, selectedRow, 1);
+                        model.setValueAt(newFirstName, selectedRow, 2);
+                        model.setValueAt(newSssNo, selectedRow, 3);
+                        model.setValueAt(newPhilHealthNo, selectedRow, 4);
+                        model.setValueAt(newPagibigNo, selectedRow, 5);
+                        model.setValueAt(newTin, selectedRow, 6);
+
+                    }
+                }
+
+            }
+
+        });
+
+        // Add a selection listener to enable/disable the view, delete, and update buttons
+        employeeTable.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                selectedRow = employeeTable.getSelectedRow();
+                boolean isSelected = (selectedRow != -1);
+                viewButton.setEnabled(isSelected);
+                deleteButton.setEnabled(isSelected);
+                updateButton.setEnabled(isSelected);
+            }
+        });
+
+        // Add the table and buttons to the frame
         add(new JScrollPane(employeeTable), BorderLayout.CENTER);
-        add(viewButton, BorderLayout.SOUTH);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(viewButton);
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(updateButton);
+        add(buttonPanel, BorderLayout.SOUTH);
+
+
+        // Add the table and button panel to the frame
+        add(new JScrollPane(employeeTable), BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
 
         // Set the size and show the frame
         setSize(800, 400);
@@ -123,5 +230,13 @@ public class SalaryCalculatorGUI extends JFrame {
 
     public static void main(String[] args) {
         new SalaryCalculatorGUI();
+    }
+
+
+
+
+    // method to delete employee record from the table model
+    private void deleteEmployeeRecord(int selectedRow) {
+        model.removeRow(selectedRow);
     }
 }
