@@ -9,16 +9,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class SalaryCalculatorGUI extends JFrame {
+public class LeaveApplication extends JFrame {
     private JTable employeeTable;
     private DefaultTableModel model;
-    private JButton viewButton, deleteButton, updateButton;
+    private JButton viewButton, deleteButton, updateButton, leaveButton;
     private int selectedRow;
     private ArrayList<Employee> employees;
     private ArrayList<Employee> deletedEmployees;
     private boolean isEditing;
 
-    public SalaryCalculatorGUI() {
+    public LeaveApplication() {
         setTitle("Employee Details");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -57,6 +57,8 @@ public class SalaryCalculatorGUI extends JFrame {
         deleteButton.setEnabled(false);
         updateButton = new JButton("Update");
         updateButton.setEnabled(false);
+        leaveButton = new JButton("Apply Leave");
+        leaveButton.setEnabled(false);
 
         // Add action listeners to buttons
         viewButton.addActionListener(new ActionListener() {
@@ -116,6 +118,67 @@ public class SalaryCalculatorGUI extends JFrame {
                 }
             }
         });
+        leaveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Get the selected row and display the employee details
+                int selectedRow = employeeTable.getSelectedRow();
+                if (selectedRow != -1) {
+                    String employeeNumber = (String) model.getValueAt(selectedRow, 0);
+                    String lastName = (String) model.getValueAt(selectedRow, 1);
+                    String firstName = (String) model.getValueAt(selectedRow, 2);
+
+                    // Display a dialog to get the leave type, number of days, start date and end date
+                    JPanel panel = new JPanel(new GridLayout(4, 2));
+                    JLabel leaveTypeLabel = new JLabel("Leave Type:");
+                    JComboBox<String> leaveTypeComboBox = new JComboBox<>(new String[]{"Sick Leave", "Vacation Leave", "Emergency Leave"});
+                    JLabel numDaysLabel = new JLabel("Number of Days:");
+                    JTextField numDaysField = new JTextField(10);
+                    JLabel startDateLabel = new JLabel("Start Date:");
+                    JTextField startDateField = new JTextField(10);
+                    JLabel endDateLabel = new JLabel("End Date:");
+                    JTextField endDateField = new JTextField(10);
+                    panel.add(leaveTypeLabel);
+                    panel.add(leaveTypeComboBox);
+                    panel.add(numDaysLabel);
+                    panel.add(numDaysField);
+                    panel.add(startDateLabel);
+                    panel.add(startDateField);
+                    panel.add(endDateLabel);
+                    panel.add(endDateField);
+                    int result = JOptionPane.showConfirmDialog(LeaveApplication.this, panel, "Apply Leave - " + firstName + " " + lastName, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    if (result == JOptionPane.OK_OPTION) {
+                        // Get the leave type, number of days, start date and end date
+                        String leaveType = (String) leaveTypeComboBox.getSelectedItem();
+                        int numDays = Integer.parseInt(numDaysField.getText());
+                        String startDate = startDateField.getText();
+                        String endDate = endDateField.getText();
+
+                        // Update the employee's leave balance in the table model
+                        int leaveColumn = -1;
+                        switch (leaveType) {
+                            case "Sick Leave":
+                                leaveColumn = 7;
+                                break;
+                            case "Vacation Leave":
+                                leaveColumn = 8;
+                                break;
+                            case "Emergency Leave":
+                                leaveColumn = 9;
+                                break;
+                        }
+                        int currentLeave = Integer.parseInt((String) model.getValueAt(selectedRow, leaveColumn));
+                        model.setValueAt(Integer.toString(currentLeave - numDays), selectedRow, leaveColumn);
+
+                        // Display a confirmation message
+                        JOptionPane.showMessageDialog(LeaveApplication.this, "Leave applied successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(LeaveApplication.this, "Please select an employee to apply leave", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -207,6 +270,7 @@ public class SalaryCalculatorGUI extends JFrame {
                 viewButton.setEnabled(isSelected);
                 deleteButton.setEnabled(isSelected);
                 updateButton.setEnabled(isSelected);
+                leaveButton.setEnabled(isSelected);
             }
         });
 
@@ -216,6 +280,7 @@ public class SalaryCalculatorGUI extends JFrame {
         buttonPanel.add(viewButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(updateButton);
+        buttonPanel.add(leaveButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
 
@@ -230,7 +295,7 @@ public class SalaryCalculatorGUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        new SalaryCalculatorGUI();
+        new LeaveApplication();
     }
 
 }

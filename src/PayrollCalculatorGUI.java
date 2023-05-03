@@ -10,9 +10,9 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
     private JTextArea outputTextArea;
 
     // Employees
-    Employee emp1 = new Employee("10001", "Jose", "Crisostomo", "222222222","11111111","333333","22220000",200, 1500, 1200, 1300);
-    Employee emp2 = new Employee("10002", "Christian", "Mata", "111111111","2222222","4444444","33330000",30.0, 600.0, 150.0, 250.0);
-    Employee emp3 = new Employee("10003", "Brad", "San Jose", "333333333","3333333","5555555","4444000",20.0, 400.0, 75.0, 150.0);
+    Employee emp1 = new Employee("10001", "Jose", "Crisostomo", "222222222","11111111","333333","22220000",200, 1500, 1200, 1300,5,10,5);
+    Employee emp2 = new Employee("10002", "Christian", "Mata", "111111111","2222222","4444444","33330000",30.0, 600.0, 150.0, 250.0,5,10,5);
+    Employee emp3 = new Employee("10003", "Brad", "San Jose", "333333333","3333333","5555555","4444000",20.0, 400.0, 75.0, 150.0,5,10,5);
 
     public PayrollCalculatorGUI() {
         // Set up the frame
@@ -94,6 +94,7 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
             double pagibigDeduction = employee.computePagibigDeduction(grossPay);
             double taxDeduction = employee.computeTaxDeduction(grossPay);
             double netPay = grossPay - sssDeduction - philhealthDeduction - pagibigDeduction - taxDeduction;
+
 
             // Display the payroll details in a GUI frame
             JFrame frame = new JFrame("Payroll Details");

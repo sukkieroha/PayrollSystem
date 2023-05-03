@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class Employee {
     private String employeeNumber;
     private String firstName;
@@ -10,9 +12,12 @@ public class Employee {
     private String philhealthNumber;
     private String pagibigNumber;
     private String tin;
+    private static int sickLeave;
+    private static int vacationLeave;
+    private static int emergencyLeave;
 
     public Employee(String employeeNumber, String firstName, String lastName,
-                     String sssNumber, String philhealthNumber, String pagibigNumber, String tin,double hourlyRate, double riceAllowance, double phoneAllowance, double clothingAllowance) {
+                    String sssNumber, String philhealthNumber, String pagibigNumber, String tin,double hourlyRate, double riceAllowance, double phoneAllowance, double clothingAllowance, int sickLeave, int vacationLeave, int emergencyLeave) {
         this.employeeNumber = employeeNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,6 +29,9 @@ public class Employee {
         this.riceAllowance = riceAllowance;
         this.phoneAllowance = phoneAllowance;
         this.clothingAllowance = clothingAllowance;
+        this.sickLeave = 5;
+        this.vacationLeave = 10;
+        this.emergencyLeave = 5;
 
     }
 
@@ -69,7 +77,7 @@ public class Employee {
     }
 
     public static double getRiceAllowance() {
-        return riceAllowance / 4;
+        return riceAllowance;
     }
 
     public void setRiceAllowance(double riceAllowance) {
@@ -77,7 +85,7 @@ public class Employee {
     }
 
     public static double getPhoneAllowance() {
-        return phoneAllowance / 4;
+        return phoneAllowance ;
     }
 
     public void setPhoneAllowance(double phoneAllowance) {
@@ -85,11 +93,30 @@ public class Employee {
     }
 
     public static double getClothingAllowance() {
-        return clothingAllowance / 4;
+        return clothingAllowance ;
     }
 
     public void setClothingAllowance(double clothingAllowance) {
         this.clothingAllowance = clothingAllowance;
+    }
+
+    public static int getSickLeave(){
+        return sickLeave;
+    }
+    public void setSickLeave(int sickLeave){
+        this.sickLeave= sickLeave;
+    }
+    public static int getVacationLeave(){
+        return  vacationLeave ;
+    }
+    public void setVacationLeave(int vacationLeave){
+        this.vacationLeave = vacationLeave;
+    }
+    public static int getEmergencyLeave() {
+        return  emergencyLeave;
+    }
+    public  void setEmergencyLeave(int emergencyLeave){
+        this.emergencyLeave =emergencyLeave;
     }
 
     public String getFullName() {
@@ -104,7 +131,7 @@ public class Employee {
     public static double computeGrossPay(double hoursWorked) {
         return hoursWorked * hourlyRate + riceAllowance + phoneAllowance + clothingAllowance;
     }
-   public static double computeSSSDeduction(double grossPay) {
+    public static double computeSSSDeduction(double grossPay) {
         return grossPay * 0.10;
     }
 
@@ -157,4 +184,5 @@ public class Employee {
                 ", clothingAllowance=" + clothingAllowance +
                 '}';
     }
+
 }
