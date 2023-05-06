@@ -3,11 +3,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
 
 public class LeaveApplication extends JFrame {
     private JTable employeeTable;
@@ -17,6 +18,8 @@ public class LeaveApplication extends JFrame {
     private ArrayList<Employee> employees;
     private ArrayList<Employee> deletedEmployees;
     private boolean isEditing;
+    private String startDateStr;
+    private String endDateStr;
 
     public LeaveApplication() {
         setTitle("Employee Details");
@@ -100,7 +103,7 @@ public class LeaveApplication extends JFrame {
                     employeeDetailsPanel.add(new JLabel(tin));
 
                     // Create a panel for the pay details
-                    //To do: store PayrollCalculator results on another csv file and display here//
+                    //TODO: embed the PayRoll Calculation here to display pay details//
                     JPanel payDetailsPanel = new JPanel(new GridLayout(2, 2));
                     payDetailsPanel.setBorder(BorderFactory.createTitledBorder("Pay Details"));
                     payDetailsPanel.add(new JLabel("Pay Coverage:"));
@@ -118,68 +121,122 @@ public class LeaveApplication extends JFrame {
                 }
             }
         });
-        leaveButton.addActionListener(new ActionListener() {
+        leaveButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Get the selected row and display the employee details
+                // Get the selected row and display the employee details and pay details
                 int selectedRow = employeeTable.getSelectedRow();
                 if (selectedRow != -1) {
                     String employeeNumber = (String) model.getValueAt(selectedRow, 0);
                     String lastName = (String) model.getValueAt(selectedRow, 1);
                     String firstName = (String) model.getValueAt(selectedRow, 2);
+                    String sssNumber = (String) model.getValueAt(selectedRow, 3);
+                    String philhealthNumber = (String) model.getValueAt(selectedRow, 4);
+                    String pagibigNumber = (String) model.getValueAt(selectedRow, 5);
+                    String tin = (String) model.getValueAt(selectedRow, 6);
 
-                    // Display a dialog to get the leave type, number of days, start date and end date
-                    JPanel panel = new JPanel(new GridLayout(4, 2));
+                    // Create a new dialog box for the leave application
+                    JFrame frame = new JFrame();
+                    JDialog leaveDialog = new JDialog(frame, "Leave Application", true);
+                    leaveDialog.setLayout(new BorderLayout());
+
+                    // Create the leave application form
+                    JPanel leaveFormPanel = new JPanel();
+                    leaveFormPanel.setLayout(new GridLayout(5, 2));
+
+                    // Add a field for the leave type
                     JLabel leaveTypeLabel = new JLabel("Leave Type:");
-                    JComboBox<String> leaveTypeComboBox = new JComboBox<>(new String[]{"Sick Leave", "Vacation Leave", "Emergency Leave"});
-                    JLabel numDaysLabel = new JLabel("Number of Days:");
-                    JTextField numDaysField = new JTextField(10);
-                    JLabel startDateLabel = new JLabel("Start Date:");
-                    JTextField startDateField = new JTextField(10);
-                    JLabel endDateLabel = new JLabel("End Date:");
-                    JTextField endDateField = new JTextField(10);
-                    panel.add(leaveTypeLabel);
-                    panel.add(leaveTypeComboBox);
-                    panel.add(numDaysLabel);
-                    panel.add(numDaysField);
-                    panel.add(startDateLabel);
-                    panel.add(startDateField);
-                    panel.add(endDateLabel);
-                    panel.add(endDateField);
-                    int result = JOptionPane.showConfirmDialog(LeaveApplication.this, panel, "Apply Leave - " + firstName + " " + lastName, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                    if (result == JOptionPane.OK_OPTION) {
-                        // Get the leave type, number of days, start date and end date
-                        String leaveType = (String) leaveTypeComboBox.getSelectedItem();
-                        int numDays = Integer.parseInt(numDaysField.getText());
-                        String startDate = startDateField.getText();
-                        String endDate = endDateField.getText();
+                    leaveFormPanel.add(leaveTypeLabel);
+                    JComboBox<String> leaveTypeComboBox = new JComboBox<String>(new String[]{"Sick", "Vacation", "Emergency"});
+                    leaveFormPanel.add(leaveTypeComboBox);
 
-                        // Update the employee's leave balance in the table model
-                        int leaveColumn = -1;
-                        switch (leaveType) {
-                            case "Sick Leave":
-                                leaveColumn = 7;
-                                break;
-                            case "Vacation Leave":
-                                leaveColumn = 8;
-                                break;
-                            case "Emergency Leave":
-                                leaveColumn = 9;
-                                break;
+                    // Add a field for the start date
+                    JLabel startDateLabel = new JLabel("Start Date (mm/dd/yyyy):");
+                    leaveFormPanel.add(startDateLabel);
+                    JTextField startDateField = new JTextField();
+                    leaveFormPanel.add(startDateField);
+
+                    // Add a field for the end date
+                    JLabel endDateLabel = new JLabel("End Date (mm/dd/yyyy):");
+                    leaveFormPanel.add(endDateLabel);
+                    JTextField endDateField = new JTextField();
+                    leaveFormPanel.add(endDateField);
+
+                    // Add a submit button
+                    JButton submitButton = new JButton("Submit");
+                    leaveFormPanel.add(submitButton);
+                    submitButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            // Get the selected leave type, start date, and end date
+                            String leaveType = (String) leaveTypeComboBox.getSelectedItem();
+                            String startDate = startDateField.getText();
+                            String endDate = endDateField.getText();
+
+                            try {
+                                FileWriter writer = new FileWriter("leaveApplication.csv", true);
+                                writer.write(employeeNumber + "," + lastName + "," + firstName + "," + sssNumber + "," + philhealthNumber + "," + pagibigNumber + "," + tin + "," + leaveTypeComboBox.getSelectedItem() + "," + startDateField.getText() + "," + endDateField.getText() + "\n");
+                                writer.close();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+
+                            // Count the remaining leaves for the employee
+                            int sickLeavesTaken = 0;
+                            int vacationLeavesTaken = 0;
+                            int emergencyLeavesTaken = 0;
+
+                            try {
+                                Scanner scanner = new Scanner(new File("leaveApplication.csv"));
+                                scanner.useDelimiter(",|\\n");
+
+                                while (scanner.hasNext()) {
+                                    String employeeNum = scanner.next();
+                                    String lastName = scanner.next();
+                                    String firstName = scanner.next();
+                                    String sssNumber = scanner.next();
+                                    String philhealthNumber = scanner.next();
+                                    String pagibigNumber = scanner.next();
+                                    String tin = scanner.next();
+                                    leaveType = scanner.next();
+                                    startDate = scanner.next();
+                                    endDate = scanner.next();
+
+                                    if (employeeNum.equals(employeeNumber)) {
+                                        if (leaveType.equals("Sick")) {
+                                            sickLeavesTaken++;
+                                        } else if (leaveType.equals("Vacation")) {
+                                            vacationLeavesTaken++;
+                                        } else if (leaveType.equals("Emergency")) {
+                                            emergencyLeavesTaken++;
+                                        }
+                                    }
+                                }
+
+                                scanner.close();
+                            } catch (FileNotFoundException ex) {
+                                ex.printStackTrace();
+                            }
+
+                            int sickLeavesRemaining = 5 - sickLeavesTaken;
+                            int vacationLeavesRemaining = 10 - vacationLeavesTaken;
+                            int emergencyLeavesRemaining = 5 - emergencyLeavesTaken;
+
+                            // Display the remaining leaves for the employee
+                            JOptionPane.showMessageDialog(leaveDialog, "Remaining Leaves:\nSick: " + sickLeavesRemaining + "\nVacation: " + vacationLeavesRemaining + "\nEmergency: " + emergencyLeavesRemaining, "Leave Application", JOptionPane.INFORMATION_MESSAGE);
+
+                            leaveDialog.dispose();
                         }
-                        int currentLeave = Integer.parseInt((String) model.getValueAt(selectedRow, leaveColumn));
-                        model.setValueAt(Integer.toString(currentLeave - numDays), selectedRow, leaveColumn);
+                    });
 
-                        // Display a confirmation message
-                        JOptionPane.showMessageDialog(LeaveApplication.this, "Leave applied successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(LeaveApplication.this, "Please select an employee to apply leave", "Error", JOptionPane.ERROR_MESSAGE);
+                    leaveDialog.add(leaveFormPanel, BorderLayout.CENTER);
+                    leaveDialog.pack();
+                    leaveDialog.setLocationRelativeTo(null);
+                    leaveDialog.setVisible(true);
                 }
             }
         });
-
-        deleteButton.addActionListener(new ActionListener() {
+                        deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = employeeTable.getSelectedRow();
@@ -294,9 +351,27 @@ public class LeaveApplication extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new LeaveApplication();
+    private int getLeaveDuration(String startDate, String endDate) {
+        SimpleDateFormat format = new SimpleDateFormat("MM-DD-YYY");
+        try {
+            Date start = format.parse(startDate);
+            Date end = format.parse(endDate);
+            long durationMillis = end.getTime() - start.getTime();
+            int days = (int) (durationMillis / (1000 * 60 * 60 * 24));
+            return days + 1;
+        } catch (ParseException e) {
+            System.out.println("Error parsing dates: " + e.getMessage());
+            return 0;
+        }
     }
 
+    public static void main(String[] args) {
+        new LeaveApplication();
+
+
+      }
+
 }
+
+
 

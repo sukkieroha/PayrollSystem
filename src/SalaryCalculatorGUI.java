@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -98,7 +97,7 @@ public class SalaryCalculatorGUI extends JFrame {
                     employeeDetailsPanel.add(new JLabel(tin));
 
                     // Create a panel for the pay details
-                    //To do: store PayrollCalculator results on another csv file and display here//
+                    //TODO: embed the PayRoll Calculation here to display pay details//
                     JPanel payDetailsPanel = new JPanel(new GridLayout(2, 2));
                     payDetailsPanel.setBorder(BorderFactory.createTitledBorder("Pay Details"));
                     payDetailsPanel.add(new JLabel("Pay Coverage:"));

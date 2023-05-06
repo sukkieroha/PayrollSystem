@@ -3,9 +3,9 @@ public class PayrollCalculator {
     public static void main(String[] args) {
 
         // Create 3 employees with their hourly rate and allowances pre-set
-        Employee emp1 = new Employee("10001", "Jose", "Crisostomo", "222222222","11111111","333333","22220000",200, 1500, 1200, 130,5,10,5);
-        Employee emp2 = new Employee("10002", "Christian", "Mata", "111111111","2222222","4444444","33330000",30.0, 600.0, 150.0, 250.0,5,10,5);
-        Employee emp3 = new Employee("10003", "Brad", "San Jose", "333333333","3333333","5555555","4444000",20.0, 400.0, 75.0, 150.0,5,10,5);
+        Employee emp1 = new Employee("10001", "Jose", "Crisostomo", "222222222","11111111","333333","22220000",200, 1500, 1200, 130,5,10, 5);
+        Employee emp2 = new Employee("10002", "Christian", "Mata", "111111111","2222222","4444444","33330000",30.0, 600.0, 150.0, 250.0,5,10, 5);
+        Employee emp3 = new Employee("10003", "Brad", "San Jose", "333333333","3333333","5555555","4444000",20.0, 400.0, 75.0, 150.0,5,10, 5);
 
         // Get input from the user for each employee
         String employeeNumber = JOptionPane.showInputDialog(null, "Enter employee number:");

@@ -1,5 +1,3 @@
-import java.time.LocalDate;
-
 public class Employee {
     private String employeeNumber;
     private String firstName;
@@ -12,9 +10,9 @@ public class Employee {
     private String philhealthNumber;
     private String pagibigNumber;
     private String tin;
-    private static int sickLeave;
-    private static int vacationLeave;
-    private static int emergencyLeave;
+    private int sickLeave;
+    private int vacationLeave;
+    private int emergencyLeave;
 
     public Employee(String employeeNumber, String firstName, String lastName,
                     String sssNumber, String philhealthNumber, String pagibigNumber, String tin,double hourlyRate, double riceAllowance, double phoneAllowance, double clothingAllowance, int sickLeave, int vacationLeave, int emergencyLeave) {
@@ -29,10 +27,9 @@ public class Employee {
         this.riceAllowance = riceAllowance;
         this.phoneAllowance = phoneAllowance;
         this.clothingAllowance = clothingAllowance;
-        this.sickLeave = 5;
-        this.vacationLeave = 10;
-        this.emergencyLeave = 5;
-
+        this.sickLeave = Integer.parseInt(String.valueOf(sickLeave));
+        this.vacationLeave = Integer.parseInt(String.valueOf(vacationLeave));
+        this.emergencyLeave = Integer.parseInt(String.valueOf(emergencyLeave));
     }
 
     public String getEmployeeNumber() {
@@ -100,25 +97,29 @@ public class Employee {
         this.clothingAllowance = clothingAllowance;
     }
 
-    public static int getSickLeave(){
-        return sickLeave;
-    }
-    public void setSickLeave(int sickLeave){
-        this.sickLeave= sickLeave;
-    }
-    public static int getVacationLeave(){
-        return  vacationLeave ;
-    }
-    public void setVacationLeave(int vacationLeave){
-        this.vacationLeave = vacationLeave;
-    }
-    public static int getEmergencyLeave() {
-        return  emergencyLeave;
-    }
-    public  void setEmergencyLeave(int emergencyLeave){
-        this.emergencyLeave =emergencyLeave;
+    public int getSickLeave() {
+    return Integer.parseInt(String.valueOf(sickLeave));
+}
+
+    public void setSickLeave(int sickLeave) {
+        this.sickLeave = Integer.parseInt(String.valueOf(sickLeave));
     }
 
+    public int getVacationLeave() {
+        return Integer.parseInt(String.valueOf(vacationLeave));
+    }
+
+    public void setVacationLeave(int vacationLeave) {
+        this.vacationLeave = Integer.parseInt(String.valueOf(vacationLeave));
+    }
+
+    public int getEmergencyLeave() {
+        return Integer.parseInt(String.valueOf(emergencyLeave));
+    }
+
+    public void setEmergencyLeave(int emergencyLeave) {
+        this.emergencyLeave = Integer.parseInt(String.valueOf(emergencyLeave));
+    }
     public String getFullName() {
         return firstName + " " + lastName;
     }
@@ -164,7 +165,7 @@ public class Employee {
         return Math.min(tax, grossPay * 0.4); // tax should not exceed 40% of gross pay
     }
 
-    public double computeNetPay(double grossPay) {
+    public static double computeNetPay(double grossPay) {
         double totalDeductions = computeSSSDeduction(grossPay) +
                 computePhilhealthDeduction(grossPay) +
                 computePagibigDeduction(grossPay) +
