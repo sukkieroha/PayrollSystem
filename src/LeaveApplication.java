@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,9 +21,80 @@ public class LeaveApplication extends JFrame {
     private boolean isEditing;
     private String startDateStr;
     private String endDateStr;
+    private static final String EMPLOYEES_FILE = "employees.csv";
+    private static final String ACCOUNTS_FILE = "authorizedAccounts.csv";
+
 
     public LeaveApplication() {
-        setTitle("Employee Details");
+
+
+        JFrame frame = new JFrame("Employee Management System");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 150);
+        frame.setLayout(new BorderLayout());
+        frame.getContentPane().setBackground(Color.BLUE);
+
+        // Create an empty border
+        int marginSize = 10;
+        EmptyBorder emptyBorder = new EmptyBorder(marginSize, marginSize, marginSize, marginSize);
+        frame.getRootPane().setBorder(emptyBorder);
+
+        // Create the credentials panel
+        JPanel credentialsPanel = new JPanel(new GridLayout(2, 2));
+        JTextField usernameField = new JTextField(10);
+        JPasswordField passwordField = new JPasswordField(10);
+        credentialsPanel.add(new JLabel("Username:"));
+        credentialsPanel.add(usernameField);
+        credentialsPanel.add(new JLabel("Password:"));
+        credentialsPanel.add(passwordField);
+        frame.add(credentialsPanel, BorderLayout.CENTER);
+
+        // Create the button panel
+        JPanel buttonPanel = new JPanel();
+        JButton loginButton = new JButton("Login");
+        buttonPanel.add(loginButton);
+        frame.add(buttonPanel, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
+
+                if (validateCredentials(username, password)) {
+                    showApplicationWindow();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Incorrect login credentials. Exiting.", "Error", JOptionPane.ERROR_MESSAGE);
+                    System.exit(0);
+                }
+            }
+        });
+
+
+    }
+    private boolean validateCredentials(String username, String password) {
+        try (BufferedReader br = new BufferedReader(new FileReader("authorizedAccounts.csv"))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                String storedUsername = data[0];
+                String storedPassword = data[1];
+
+                if (username.equals(storedUsername) && password.equals(storedPassword)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    private void showApplicationWindow() {
+    setTitle("Employee Details");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -236,7 +308,7 @@ public class LeaveApplication extends JFrame {
                 }
             }
         });
-                        deleteButton.addActionListener(new ActionListener() {
+        deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = employeeTable.getSelectedRow();
@@ -365,13 +437,14 @@ public class LeaveApplication extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
+       public static void main(String[] args) {
         new LeaveApplication();
 
 
-      }
+    }
 
 }
+
 
 
 
