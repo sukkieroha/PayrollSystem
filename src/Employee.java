@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+
 public class Employee {
     private String employeeNumber;
     private String firstName;
@@ -13,6 +15,8 @@ public class Employee {
     private int sickLeave;
     private int vacationLeave;
     private int emergencyLeave;
+
+    private SimpleDateFormat dateFormat;
 
     public Employee(String employeeNumber, String firstName, String lastName,
                     String sssNumber, String philhealthNumber, String pagibigNumber, String tin,double hourlyRate, double riceAllowance, double phoneAllowance, double clothingAllowance, int sickLeave, int vacationLeave, int emergencyLeave) {
@@ -30,7 +34,9 @@ public class Employee {
         this.sickLeave = Integer.parseInt(String.valueOf(sickLeave));
         this.vacationLeave = Integer.parseInt(String.valueOf(vacationLeave));
         this.emergencyLeave = Integer.parseInt(String.valueOf(emergencyLeave));
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     }
+
 
     public String getEmployeeNumber() {
         return employeeNumber;

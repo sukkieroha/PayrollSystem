@@ -9,6 +9,7 @@ public class PayrollCalculatorGUI extends JFrame implements ActionListener {
     private JButton calculateButton;
     private JTextArea outputTextArea;
 
+
     // Employees
     Employee emp1 = new Employee("10001", "Jose", "Crisostomo", "222222222","11111111","333333","22220000",200, 1500, 1200, 1300,5,10,5);
     Employee emp2 = new Employee("10002", "Christian", "Mata", "111111111","2222222","4444444","33330000",30.0, 600.0, 150.0, 250.0,5,10,5);
