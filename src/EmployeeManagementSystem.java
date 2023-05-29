@@ -15,9 +15,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class EmployeeManagementSystem extends JFrame {
-    private JTable employeeTable;
-    private DefaultTableModel model;
-    private JButton viewButton, deleteButton, updateButton, leaveButton,calculatePayButton;
+
+    JTable employeeTable;
+    DefaultTableModel model;
+    private JButton viewButton;
+    private JButton deleteButton;
+    private JButton updateButton;
+    private JButton leaveButton;
+    private JButton calculatePayButton;
+    JButton showButton;
     private JTextField employeeNumberField, lastNameField, firstNameField, grossPayField, riceAllowanceField,phoneAllowanceField,clothingAllowanceField, sssDeductionField,philhealthDeductionField, pagibigDeductionField,taxDeductionField, netPayField  ;
     private int selectedRow;
     private ArrayList<Employee> employees;
@@ -76,7 +82,7 @@ public class EmployeeManagementSystem extends JFrame {
 
 
     }
-    private boolean validateCredentials(String username, String password) {
+    boolean validateCredentials(String username, String password) {
         try (BufferedReader br = new BufferedReader(new FileReader("authorizedAccounts.csv"))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -197,65 +203,65 @@ public class EmployeeManagementSystem extends JFrame {
                     payDetailsPanel.add(detailsPanel, BorderLayout.CENTER);
 
                     // Add the pay details labels and text fields to the details panel
-                                                 detailsPanel.add(new JLabel("Employee Number:"));
-                                                 JTextField employeeNumberField = new JTextField();
-                                                 detailsPanel.add(employeeNumberField);
+                    detailsPanel.add(new JLabel("Employee Number:"));
+                    JTextField employeeNumberField = new JTextField();
+                    detailsPanel.add(employeeNumberField);
 
-                                                 detailsPanel.add(new JLabel("First Name:"));
-                                                 JTextField firstNameField = new JTextField();
-                                                 detailsPanel.add(firstNameField);
+                    detailsPanel.add(new JLabel("First Name:"));
+                    JTextField firstNameField = new JTextField();
+                    detailsPanel.add(firstNameField);
 
-                                                 detailsPanel.add(new JLabel("Last Name:"));
-                                                 JTextField lastNameField = new JTextField();
-                                                 detailsPanel.add(lastNameField);
+                    detailsPanel.add(new JLabel("Last Name:"));
+                    JTextField lastNameField = new JTextField();
+                    detailsPanel.add(lastNameField);
 
-                                                 detailsPanel.add(new JLabel("Gross Pay:"));
-                                                 JTextField grossPayField = new JTextField();
-                                                 detailsPanel.add(grossPayField);
+                    detailsPanel.add(new JLabel("Gross Pay:"));
+                    JTextField grossPayField = new JTextField();
+                    detailsPanel.add(grossPayField);
 
-                                                 detailsPanel.add(new JLabel("Rice Allowance:"));
-                                                 JTextField riceAllowanceField = new JTextField();
-                                                 detailsPanel.add(riceAllowanceField);
+                    detailsPanel.add(new JLabel("Rice Allowance:"));
+                    JTextField riceAllowanceField = new JTextField();
+                    detailsPanel.add(riceAllowanceField);
 
-                                                 detailsPanel.add(new JLabel("Phone Allowance:"));
-                                                 JTextField phoneAllowanceField = new JTextField();
-                                                 detailsPanel.add(phoneAllowanceField);
+                    detailsPanel.add(new JLabel("Phone Allowance:"));
+                    JTextField phoneAllowanceField = new JTextField();
+                    detailsPanel.add(phoneAllowanceField);
 
-                                                 detailsPanel.add(new JLabel("Clothing Allowance:"));
-                                                 JTextField clothingAllowanceField = new JTextField();
-                                                 detailsPanel.add(clothingAllowanceField);
+                    detailsPanel.add(new JLabel("Clothing Allowance:"));
+                    JTextField clothingAllowanceField = new JTextField();
+                    detailsPanel.add(clothingAllowanceField);
 
-                                                 detailsPanel.add(new JLabel("SSS Deduction:"));
-                                                 JTextField sssDeductionField = new JTextField();
-                                                 detailsPanel.add(sssDeductionField);
+                    detailsPanel.add(new JLabel("SSS Deduction:"));
+                    JTextField sssDeductionField = new JTextField();
+                    detailsPanel.add(sssDeductionField);
 
-                                                 detailsPanel.add(new JLabel("Philhealth Deduction:"));
-                                                 JTextField philhealthDeductionField = new JTextField();
-                                                 detailsPanel.add(philhealthDeductionField);
+                    detailsPanel.add(new JLabel("Philhealth Deduction:"));
+                    JTextField philhealthDeductionField = new JTextField();
+                    detailsPanel.add(philhealthDeductionField);
 
-                                                 detailsPanel.add(new JLabel("Pagibig Deduction:"));
-                                                 JTextField pagibigDeductionField = new JTextField();
-                                                 detailsPanel.add(pagibigDeductionField);
+                    detailsPanel.add(new JLabel("Pagibig Deduction:"));
+                    JTextField pagibigDeductionField = new JTextField();
+                    detailsPanel.add(pagibigDeductionField);
 
-                                                 detailsPanel.add(new JLabel("Tax Deduction:"));
-                                                 JTextField taxDeductionField = new JTextField();
-                                                 detailsPanel.add(taxDeductionField);
+                    detailsPanel.add(new JLabel("Tax Deduction:"));
+                    JTextField taxDeductionField = new JTextField();
+                    detailsPanel.add(taxDeductionField);
 
-                                                 detailsPanel.add(new JLabel("Net Pay:"));
-                                                 JTextField netPayField = new JTextField();
-                                                 detailsPanel.add(netPayField);
+                    detailsPanel.add(new JLabel("Net Pay:"));
+                    JTextField netPayField = new JTextField();
+                    detailsPanel.add(netPayField);
 
 
-                                                 // Create a panel to hold the payDateComboBox with a FlowLayout
-                                                 JPanel payDateComboBoxPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-                                                 payDateComboBoxPanel.add(new JLabel("Select Pay Date:"));
-                                                 payDateComboBoxPanel.add(payDateComboBox);
+                    // Create a panel to hold the payDateComboBox with a FlowLayout
+                    JPanel payDateComboBoxPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                    payDateComboBoxPanel.add(new JLabel("Select Pay Date:"));
+                    payDateComboBoxPanel.add(payDateComboBox);
 
-                                                // Create a "Show" button to display the selected pay date details
-                                                 JButton showButton = new JButton("Show");
-                                                 payDateComboBoxPanel.add(showButton);
+                    // Create a "Show" button to display the selected pay date details
+                    JButton showButton = new JButton("Show");
+                    payDateComboBoxPanel.add(showButton);
 
-                                                // Add action listener for the Show button
+                    // Add action listener for the Show button
                     showButton.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {

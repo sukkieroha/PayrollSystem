@@ -13,6 +13,11 @@ public class EmployeeCSV {
         employees.add(new Employee("10003", "Brad", "San Jose", "40-2400714-1	", "239192926939", "210850209964", "672-474-690-000", 255.80, 1500.00, 800, 800, 5, 10, 5));
         employees.add(new Employee("10004", "Anthony", "Salcedo", "26-9647608-3", "126445315651", "218002473454", "210-805-911-000", 362.05, 1500.00, 1000, 1000, 5, 10, 5));
         employees.add(new Employee("10005", "Alice", "Romualdez", "55-4476527-2", "545652640232", "211385556888", "888-572-294-000", 133.93, 1500, 500, 500, 5, 10, 5));
+        employees.add(new Employee(" 10006"," Rosie","Atienza"," 41-0644692-3","708988234853","260107732354","604-997-793-000",133.93,1500,500,500,5,10,5));
+        employees.add(new Employee("10007","Martha","Farala","45-5656375-0","233693897247","631130283546","210-835-851-000",142.86,1500,500,500,5,10,5));
+        employees.add(new Employee("10008","Leila","Martinez","27-2090996-4","515741057496","101205445886","275-792-513-000",142.86,1500,500,500,5,10,5));
+        employees.add(new Employee("10009","Allison","San Jose","45-3251383-0","745148459521","114901859343","121-203-336-000",133.93,1500,500,500,5,10,5));
+        employees.add(new Employee("10010","Cydney ","Rosario","49-1629900-2","579253435499","265104358643","122-244-511-000",133.93,1500,500,500,5,10,10));
         // Write employee details to CSV file
         String employeeFilename = "employees.csv";
         try (FileWriter writer = new FileWriter(employeeFilename)) {
